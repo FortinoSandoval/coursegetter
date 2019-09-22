@@ -1,94 +1,77 @@
-var express = require("express");
+const express = require('express');
 const cors = require('cors');
-var app = express();
-app.use(cors());
-var request = require("request");
+const app = express();
+const request = require('request');
 const bodyParser = require('body-parser');
-var fs = require('fs');
+const fs = require('fs');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
-var download = function(uri, filename, callback){
-  request.head(uri, function(err, res, body){
-    console.log('content-type:', res.headers['content-type']);
-    console.log('content-length:', res.headers['content-length']);
-
-    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+// Download the file to root directory
+const download = function(uri, filename, callback) {
+  request.head(uri, function(err, res, body) {
+    request(uri)
+      .pipe(fs.createWriteStream(filename))
+      .on('close', callback);
   });
 };
 
-
-app.post("/post", (req, resp, next) => {
+// Post creation endpoint
+app.post('/post', (req, resp, next) => {
+  // Basic auth
   const basic = req.body.basic;
   const image = req.body.image;
   const finalData = req.body.data;
+  const finalTitle = finalData.discount === 'FREE' ? `[FREE] ${finalData.title} [Udemy]` : `[${finalData.discount}% OFF] ${finalData.title} [Udemy]`;
   const imageName = image.substring(image.indexOf('480x270') + 8, image.length);
 
 
   download(image, imageName, function () {
-
-    var formData = {
-      file: fs.createReadStream(__dirname + `/${imageName}`),
+    // Form data for image upload to wp media
+    const formData = {
+      file: fs.createReadStream(__dirname + `/${imageName}`)
     };
-    var mediaOptions = {
+
+    // request options for image upload
+    const mediaOptions = {
       url: 'https://techcoursesite.com/wp-json/wp/v2/media',
       headers: {
-        'Authorization': basic,
+        Authorization: basic,
         'Content-Disposition': `attachment; filename="${imageName}`,
         'content-type': 'application/octet-stream'
       },
       method: 'POST',
-      formData : formData
+      formData: formData
     };
-
 
     request(mediaOptions, (error, response, body) => {
       const finalImageId = JSON.parse(body).id;
 
-      var postOptions = {
+      // image delete
+      fs.unlinkSync(__dirname + `/${imageName}`);
+
+      // request options for post creation
+      const postOptions = {
         url: 'https://techcoursesite.com/wp-json/wp/v2/posts',
         headers: {
           'User-Agent': 'request',
-          'Authorization': basic
+          Authorization: basic
         },
         method: 'POST',
         body: finalData,
         json: true
       };
-
       finalData.featured_media = finalImageId;
+      finalData.title = finalTitle; 
       request(postOptions, (error, response, body) => {
         resp.send(body);
       });
-
-
     });
-    
   });
 });
- 
-// app.post("/media", (req, resp, next) => {
-//   const basic = req.body.basic;
-//   const data = req.body.data;
-//   var options = {
-//     url: 'https://techcoursesite.com/wp-json/wp/v2/media',
-//     headers: {
-//       'User-Agent': 'request',
-//       'content-type': 'image/png',
-//       'cache-control': 'no-cache',
-//       'content-disposition': 'attachment; filename=tmp',
-//       'Authorization': basic
-//     },
-//     method: 'POST',
-//     body: data,
-//     json: true
-//   };
-//   request(options, (error, response, body) => {
-//     resp.send(body);
-//   });
-//  });
 
 app.listen(9090, () => {
- console.log("Server running on port 3000");
+  console.log('Server running on port 3000');
 });
