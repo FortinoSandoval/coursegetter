@@ -9,6 +9,7 @@ const path = require('path');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static('dist'));
 
 // Download the file to root directory
 const download = function(uri, filename, callback) {
@@ -20,7 +21,7 @@ const download = function(uri, filename, callback) {
 };
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/index.html'));
+  res.sendFile(path.join(__dirname, '/dist/index.html'));
 });
 
 // Post creation endpoint
