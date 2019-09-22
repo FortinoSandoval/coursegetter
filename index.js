@@ -4,6 +4,7 @@ const app = express();
 const request = require('request');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const path = require('path');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -77,5 +78,5 @@ app.post('/post', (req, resp, next) => {
 });
 
 app.listen(process.env.PORT || 4000, () => {
-  console.log('Server running on port 3000');
+  console.log(`Server running on port ${process.env.PORT || 4000}`);
 });
