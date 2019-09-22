@@ -18,6 +18,10 @@ const download = function(uri, filename, callback) {
   });
 };
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/index.html'));
+});
+
 // Post creation endpoint
 app.post('/post', (req, resp, next) => {
   // Basic auth
