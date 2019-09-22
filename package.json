@@ -14,7 +14,7 @@
     "start:dist": "gulp serve:dist",
     "update:bower": "ncu -u -p bower",
     "update:dev": "ncu -u",
-    "postinstall": "gulp build"
+    "postinstall": "bower install && gulp build"
   },
   "author": "",
   
