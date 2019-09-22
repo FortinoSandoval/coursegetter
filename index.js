@@ -72,6 +72,6 @@ app.post('/post', (req, resp, next) => {
   });
 });
 
-app.listen(9090, () => {
+app.listen(process.env.PORT || 4000, () => {
   console.log('Server running on port 3000');
 });
