@@ -34,9 +34,26 @@
       { id: 3, text: 'Development' }
     ];
 
+    $scope.selectOpts = [100, 99, 95, 90, 'FREE'];
+
+    
+    $scope.selectPublishOpts = [
+      {
+        esp: 'Borrador',
+        val: 'draft'
+      },
+      {
+        esp: 'Publicado',
+        val: 'publish'
+      },
+      {
+        esp: 'Programar',
+        val: 'publish'
+      }
+    ];
+
     $scope.selectedList = [];
     $scope.selectedListText = [];
-    
 
     if (!localStorage.credentials) {
       vm.showLogin = true;
@@ -53,8 +70,8 @@
     };
 
     vm.getInfo = () => {
-
-  
+      
+      
       vm.data.categories = [];
       $scope.selectedListText = [];
       $scope.selectedList.forEach((el, index) => {
@@ -63,6 +80,7 @@
           $scope.selectedListText.push($scope.categories.find(x => x.id === index).text);
         }
       });
+      if($scope.selectedListText.length === 0) return;
 
       const htmlData = JSON.stringify(vm.courseHtml);
 
@@ -162,12 +180,10 @@
 
       const descriptionInApp = htmlToElement(stringContent);
       descriptionInApp.childNodes.forEach(element => {
-        console.log(element.nodeName);
         if (element.nodeName === 'H2') {
           element.classList = 'title is-3';
         }
       }); 
-      console.log(descriptionInApp);
       descDiv.appendChild(descriptionInApp);
     };
 
@@ -196,6 +212,8 @@
       }
       const apiUrl = 'https://coursegetter.herokuapp.com/post';
       const isLocalhost = location.hostname === 'localhost';
+      console.log(DTO);
+      return;
       return $http.post(isLocalhost ? apiUrl : '/post', DTO);
     };
 
@@ -212,6 +230,35 @@
       element.innerHTML = html;
       return(element);
     }
+
+    $scope.publishSelect = opt => {
+      vm.data.statusEsp = opt.esp;
+      vm.data.status = opt.val;
+      if (opt.esp === 'Programar') {
+        // Initialize all input of date type.
+        bulmaCalendar.attach('[type="date"]', {
+          type: 'datetime',
+          color: 'info',
+          validateLabel: 'OK',
+          todayLabel: 'Hoy',
+          lang: 'es',
+          displayMode: 'dialog'
+        });
+
+        // To access to bulmaCalendar instance of an element
+        const element = document.querySelector('#datepicker');
+        if (element) {
+          // bulmaCalendar instance is available as element.bulmaCalendar
+          element.bulmaCalendar.on('select', datepicker => {
+            console.log(datepicker.data.value());
+            vm.data.date = datepicker.data.value();
+          });
+        }
+        document.getElementById('calendar').style.display = 'block';
+      } else {
+        document.getElementById('calendar').style.display = 'none';
+      }
+    };
 
 
   }

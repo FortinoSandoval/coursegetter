@@ -4,25 +4,13 @@
     <div class="field">
       <label class="label">Username</label>
       <div class="control">
-        <input
-          required
-          class="input"
-          ng-model="vm.username"
-          type="text"
-          placeholder="Enter your username"
-        />
+        <input required class="input" ng-model="vm.username" type="text" placeholder="Enter your username" />
       </div>
     </div>
     <div class="field">
       <label class="label">Password</label>
       <div class="control">
-        <input
-          required
-          class="input"
-          ng-model="vm.password"
-          type="password"
-          placeholder="Enter your password"
-        />
+        <input required class="input" ng-model="vm.password" type="password" placeholder="Enter your password" />
       </div>
     </div>
     <input type="submit" class="button is-primary is-rounded" value="Save" />
@@ -31,42 +19,48 @@
 
 <!-- Basic Information Form -->
 <div ng-if="!vm.showLogin && !vm.submitted">
-  <form action="#" class="" ng-submit="vm.getInfo()">
+  <form name="getInfoForm" class="" ng-submit="vm.getInfo()">
     <div class="field">
       <label class="label">HTML</label>
       <div class="control">
-        <textarea
-          required
-          class="textarea"
-          ng-model="vm.courseHtml"
-          placeholder="Course HTML"
-        ></textarea>
+        <textarea required class="textarea" ng-model="vm.courseHtml" placeholder="Course HTML"></textarea>
       </div>
     </div>
 
     <div class="field">
       <label class="label">Descuento</label>
+      <div class="select is-rounded">
+        <select ng-init="vm.data.discount = selectOpts[0]" ng-options="x for x in selectOpts"
+          ng-model="vm.data.discount">
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Tipo de publicación</label>
+      <div class="tabs is-toggle">
+        <ul>
+          <li ng-init="vm.data.statusEsp = 'Borrador'; vm.data.status = 'draft'" ng-class="{'is-active': vm.data.statusEsp === opt.esp}" ng-repeat="opt in selectPublishOpts" ng-click="publishSelect(opt)">
+            <a>
+              <span class="icon is-small"><i class="fas" ng-class="{'fa-edit': opt.esp === 'Borrador', 'fa-globe-americas': opt.esp === 'Publicado', 'fa-calendar-alt': opt.esp === 'Programar'}" aria-hidden="true"></i></span>
+              <span>{{ opt.esp }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="field" id="calendar" style="display: none">
+      <label class="label">Fecha de publicación</label>
       <div class="control">
-        <input
-          required
-          ng-model="vm.data.discount"
-          class="input"
-          type="number"
-          placeholder="Ingresa el descuento"
-        />
+        <input id="datepicker" name="datePicker" ng-required="vm.data.statusEsp === 'Programar'" type="date">
       </div>
     </div>
 
     <div class="field">
       <label class="label">URL Del Curso</label>
       <div class="control">
-        <input
-          required
-          ng-model="vm.courseLink"
-          class="input"
-          type="text"
-          placeholder="URL del curso"
-        />
+        <input required ng-model="vm.courseLink" class="input" type="text" placeholder="URL del curso" />
       </div>
     </div>
 
@@ -77,11 +71,7 @@
       </label>
     </div>
 
-    <input
-      type="submit"
-      class="button is-primary is-rounded"
-      value="Obtener Información"
-    />
+    <input type="submit" class="button is-primary is-rounded" value="Obtener Información" />
   </form>
 </div>
 
@@ -118,7 +108,7 @@
   </div>
 
 
-  
+
 </div>
 <h3 class="title is-3" ng-if="vm.submitted">Descripcion del curso</h3>
 <div id="courseDesc"></div>
