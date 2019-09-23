@@ -47,14 +47,8 @@
     };
 
     vm.getInfo = () => {
-      const htmlString = html2json(`<ul class="requirements__list">
-      <li class="requirements__item">PHP Basics are required</li>
-      </ul>`);
 
-      console.log(htmlString);
-
-
-      return;
+  
       vm.data.categories = [];
       $scope.selectedList.forEach((el, index) => {
         if (el) {
@@ -62,9 +56,78 @@
         }
       });
 
-      const htmlData = JSON.stringify(vm.courseHtml)
+      const htmlData = JSON.stringify(vm.courseHtml);
 
       vm.submitted = true;
+
+      var h2Req = document.createElement('h2');
+      h2Req.appendChild(document.createTextNode('Requirements'));
+      var h2Desc = document.createElement('h2');
+      h2Desc.appendChild(document.createTextNode('Description'));
+  
+      
+      /** ---- Get Requirements ---- */
+      const subRequiremenets = htmlData.substring(htmlData.indexOf('requirements__content'), htmlData.length);
+      const subRequiremenets2 = subRequiremenets.substring(subRequiremenets.indexOf('<ul'), subRequiremenets.length);
+      const subRequiremenets3 = subRequiremenets2.substring(0, subRequiremenets2.indexOf('</ul>') + 5);
+      const requiremenets = decodeURI(subRequiremenets3)
+      
+      const htmlJsonString = html2json(decodeURI(requiremenets));
+      const ulRequeriments = document.createElement('ul');
+      
+      htmlJsonString.child[0].child.forEach(el => {
+        if (el.node === 'element') {
+          var li = document.createElement('li');
+          ulRequeriments.appendChild(li);
+          li.innerHTML = li.innerHTML + el.child[0].text
+        }
+      });
+      
+      /** ---- Get Desc ---- */
+      
+      
+      
+      
+      
+      /** ---- Get audience ---- */
+      const subAudience = htmlData.substring(htmlData.indexOf('audience__list') - 12, htmlData.length);
+      const subAudience2 = subAudience.substring(0, subAudience.indexOf('</ul>') + 5);
+
+
+      
+      const htmlAudJsonString = html2json(decodeURI(subAudience2));
+      const ulAudRequeriments = document.createElement('ul');
+    
+      htmlAudJsonString.child[0].child.forEach(el => {
+        if (el.node === 'element') {
+          var li = document.createElement('li');
+          ulAudRequeriments.appendChild(li);
+          li.innerHTML = li.innerHTML + el.child[0].text
+        }
+      });
+      
+      console.log(ulAudRequeriments);
+
+
+
+
+      const courseBtn = document.createElement('figure');
+      courseBtn.classList.add('wp-block-image');
+      const courseLink = document.createElement('a');
+      courseLink.target = '_blank';
+      courseLink.rel = 'noreferrer noopener';
+      courseLink.href = vm.courseLink;
+      const linkImg = document.createElement('img');
+      linkImg.src = 'https://techcoursesite.com/wp-content/uploads/2019/09/course-link.png';
+
+      
+      
+      
+      
+      
+
+
+
       /** --------------- */
       const subTitle = htmlData.substring(htmlData.indexOf('<h1'), htmlData.indexOf('</h1'));
       var title = subTitle.substring(subTitle.indexOf('\\n') + 2, subTitle.length - 2);
@@ -84,6 +147,13 @@
 
       vm.image = image;
 
+      linkImg.alt = title;
+
+      courseLink.appendChild(linkImg);
+      courseBtn.appendChild(courseLink);
+
+      const finalContent = h2Req.outerHTML + ulRequeriments.outerHTML + h2Desc.outerHTML + ulAudRequeriments.outerHTML + courseBtn.outerHTML;
+      vm.data.content = finalContent;
       /** --------------- */
     };
 
@@ -113,6 +183,10 @@
 
     function authenticateUser(username, password) {
       return "Basic " + btoa(username + ":" + password);
+    }
+
+    function htmlDecode(value){ 
+      return $('<div/>').html(value).text(); 
     }
 
   }

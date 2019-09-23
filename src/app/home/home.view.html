@@ -13,6 +13,10 @@
   <label for="udemyUrl">discount</label>
   <br />
   <input ng-model="vm.data.discount" />
+  <br>
+  <label for="udemyUrl">udemy url</label>
+  <br />
+  <input type="text" ng-model="vm.courseLink">
   <br />
   <div ng-repeat="cat in categories">
     <input type="checkbox" id="{{ cat.id }}" ng-model="selectedList[cat.id]" />
