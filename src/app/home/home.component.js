@@ -157,8 +157,10 @@
       /** --------------- */
       const descDiv = document.getElementById('courseDesc');
       const stringContent = finalContent;
-      descDiv.appendChild(htmlToElement(stringContent));
       console.log(stringContent);
+      console.log(descDiv);
+      console.log(document.getElementById('courseDesc'));
+      descDiv.appendChild(htmlToElement(stringContent));
     };
 
     vm.reset = () => {
