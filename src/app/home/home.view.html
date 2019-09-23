@@ -7,29 +7,32 @@
 </div>
 <div ng-if="!vm.showLogin && !vm.submitted" class="form">
   <label for="udemyUrl">Udemy course html</label>
-  <br>
+  <br />
   <textarea ng-model="vm.courseHtml"></textarea>
-  <br>
+  <br />
   <label for="udemyUrl">discount</label>
-  <br>
-  <input ng-model="vm.data.discount">
-  <br>
+  <br />
+  <input ng-model="vm.data.discount" />
+  <br />
   <div ng-repeat="cat in categories">
-      <input type="checkbox" id="{{cat.id}}" ng-model="selectedList[cat.id]"/>
-      <label for="{{cat.id}}">{{cat.text}}</label>
-    </div>
+    <input type="checkbox" id="{{ cat.id }}" ng-model="selectedList[cat.id]" />
+    <label for="{{ cat.id }}">{{ cat.text }}</label>
+  </div>
 
-    
-        
-  
-  <br>
+  <br />
   <button ng-click="vm.getInfo()">Get Information</button>
 </div>
 <div id="response" ng-if="vm.submitted">
   <h2>son correstos los datos?</h2>
   <div>
     Titulo
-    <p>{{ vm.data.discount === 'FREE' ? '[FREE] ' + vm.data.title + ' [Udemy]' : '[' + vm.data.discount + '% OFF] ' + vm.data.title + ' [Udemy]' }}</p>
+    <p>
+      {{
+        vm.data.discount === 'FREE'
+          ? '[FREE] ' + vm.data.title + ' [Udemy]'
+          : '[' + vm.data.discount + '% OFF] ' + vm.data.title + ' [Udemy]'
+      }}
+    </p>
   </div>
   <div>
     Extracto
@@ -37,7 +40,7 @@
   </div>
   <div>
     Imagen
-    <p><img ng-src="{{ vm.image }}"></p>
+    <p><img ng-src="{{ vm.image }}" /></p>
   </div>
 
   <button ng-click="vm.send()">OK</button>
