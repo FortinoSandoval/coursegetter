@@ -155,11 +155,11 @@
       const finalContent = h2Req.outerHTML + ulRequeriments.outerHTML + h2Desc.outerHTML + h2Aud.outerHTML + ulAudRequeriments.outerHTML + courseBtn.outerHTML;
       vm.data.content = finalContent;
       /** --------------- */
-      const descDiv = document.getElementById('courseDesc');
+      const descDiv = document.querySelector('#courseDesc');
       const stringContent = finalContent;
       console.log(stringContent);
       console.log(descDiv);
-      console.log(document.getElementById('courseDesc'));
+      console.log(document.querySelector('#courseDesc'));
       descDiv.appendChild(htmlToElement(stringContent));
     };
 
