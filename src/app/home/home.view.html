@@ -1,9 +1,19 @@
-<div ng-if="vm.showLogin">
-  <label for="username">username</label>
-  <input ng-model="vm.username" type="text" name="username" />
-  <label for="password">password</label>
-  <input ng-model="vm.password" type="text" name="password" />
-  <button ng-click="vm.saveCredentials()">Save</button>
+<div ng-if="vm.showLogin" class="login-form">
+  <form novalidate class="">
+    <div class="field">
+      <label class="label">Username</label>
+      <div class="control">
+        <input required class="input" class="vm.username" type="text" placeholder="Enter your username">
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Username</label>
+      <div class="control">
+        <input required class="input" class="vm.password" type="text" placeholder="Enter your password">
+      </div>
+    </div>
+    <input type="submit" ng-click="vm.saveCredentials()" value="Save" />
+  </form>
 </div>
 <div ng-if="!vm.showLogin && !vm.submitted" class="form">
   <label for="udemyUrl">Udemy course html</label>
