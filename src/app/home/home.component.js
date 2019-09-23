@@ -155,7 +155,10 @@
       const finalContent = h2Req.outerHTML + ulRequeriments.outerHTML + h2Desc.outerHTML + h2Aud.outerHTML + ulAudRequeriments.outerHTML + courseBtn.outerHTML;
       vm.data.content = finalContent;
       /** --------------- */
-      console.log(finalContent);
+      const descDiv = document.getElementById('courseDesc');
+      const stringContent = finalContent;
+      descDiv.appendChild(htmlToElement(stringContent));
+      console.log(stringContent);
     };
 
     vm.reset = () => {
@@ -189,6 +192,13 @@
     function htmlDecode(value){ 
       return $('<div/>').html(value).text(); 
     }
+
+    function htmlToElement(html) {
+      var element = document.createElement('div');
+      element.innerHTML = html;
+      return(element);
+    }
+
 
   }
 
