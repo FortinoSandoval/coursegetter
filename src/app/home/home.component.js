@@ -64,6 +64,8 @@
       h2Req.appendChild(document.createTextNode('Requirements'));
       var h2Desc = document.createElement('h2');
       h2Desc.appendChild(document.createTextNode('Description'));
+      var h2Aud = document.createElement('h2');
+      h2Aud.appendChild(document.createTextNode('Who this course is for:'));
   
       
       /** ---- Get Requirements ---- */
@@ -120,14 +122,6 @@
       const linkImg = document.createElement('img');
       linkImg.src = 'https://techcoursesite.com/wp-content/uploads/2019/09/course-link.png';
 
-      
-      
-      
-      
-      
-
-
-
       /** --------------- */
       const subTitle = htmlData.substring(htmlData.indexOf('<h1'), htmlData.indexOf('</h1'));
       var title = subTitle.substring(subTitle.indexOf('\\n') + 2, subTitle.length - 2);
@@ -152,7 +146,7 @@
       courseLink.appendChild(linkImg);
       courseBtn.appendChild(courseLink);
 
-      const finalContent = h2Req.outerHTML + ulRequeriments.outerHTML + h2Desc.outerHTML + ulAudRequeriments.outerHTML + courseBtn.outerHTML;
+      const finalContent = h2Req.outerHTML + ulRequeriments.outerHTML + h2Desc.outerHTML + h2Aud.outerHTML + ulAudRequeriments.outerHTML + courseBtn.outerHTML;
       vm.data.content = finalContent;
       /** --------------- */
     };
