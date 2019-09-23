@@ -1,5 +1,5 @@
 <div ng-if="vm.showLogin" class="login-form">
-  <form novalidate class="">
+  <form class="" ng-submit="vm.saveCredentials()">
     <div class="field">
       <label class="label">Username</label>
       <div class="control">
@@ -7,12 +7,12 @@
       </div>
     </div>
     <div class="field">
-      <label class="label">Username</label>
+      <label class="label">Password</label>
       <div class="control">
-        <input required class="input" class="vm.password" type="text" placeholder="Enter your password">
+        <input required class="input" class="vm.password" type="password" placeholder="Enter your password">
       </div>
     </div>
-    <input type="submit" ng-click="vm.saveCredentials()" value="Save" />
+    <input type="submit" value="Save" />
   </form>
 </div>
 <div ng-if="!vm.showLogin && !vm.submitted" class="form">
