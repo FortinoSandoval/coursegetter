@@ -1,51 +1,62 @@
 <!DOCTYPE html>
 <html ng-app="app">
+
 <head>
-    <base href="/">
-    <meta charset="utf-8">
-    <title>Angular Gulp Boilerplate</title>
-    <script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
+  <base href="/">
+  <meta charset="utf-8">
+  <title>Angular Gulp Boilerplate</title>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdn.rawgit.com/blowsie/Pure-JavaScript-HTML5-Parser/master/htmlparser.js"></script>
   <script src="./html2json.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
 
-    <!-- build:css(src) styles/vendor.css -->
-    <!-- bower:css -->
-    <!-- Bower dependencies styles will go here after Gulp `inject` task. -->
-    <!-- endbower -->
-    <!-- endbuild -->
 
-    <!-- build:css(.tmp/serve) styles/app.css -->
-    <!-- inject:css -->
-    <!-- Output styles will go here after Gulp `inject` task. -->
-    <!-- endinject -->
-    <!-- endbuild -->
+  <!-- build:css(src) styles/vendor.css -->
+  <!-- bower:css -->
+  <!-- Bower dependencies styles will go here after Gulp `inject` task. -->
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:css(.tmp/serve) styles/app.css -->
+  <!-- inject:css -->
+  <!-- Output styles will go here after Gulp `inject` task. -->
+  <!-- endinject -->
+  <!-- endbuild -->
 
 </head>
+
 <body>
+  <section class="section">
+    <div class="container">
+      <div ui-view=""></div>
+    </div>
+  </section>
 
-<div ui-view=""></div>
 
-<!-- build:js(src) scripts/vendor.js -->
-<!-- bower:js -->
-<!-- Bower dependencies scripts will go here after Gulp `inject` task. -->
-<!-- endbower -->
-<!-- endbuild -->
+  
 
-<!-- build:js({.tmp/partials,.tmp/serve}) scripts/app.js -->
+  <!-- build:js(src) scripts/vendor.js -->
+  <!-- bower:js -->
+  <!-- Bower dependencies scripts will go here after Gulp `inject` task. -->
+  <!-- endbower -->
+  <!-- endbuild -->
 
-<!-- inject:js -->
-<!-- Scripts will go here after Gulp `inject` task. -->
-<!-- endinject -->
+  <!-- build:js({.tmp/partials,.tmp/serve}) scripts/app.js -->
 
-<!-- inject:partials -->
-<!-- Angular templates will be converted to scripts and go here after Gulp `build` task. -->
-<!-- endinject -->
+  <!-- inject:js -->
+  <!-- Scripts will go here after Gulp `inject` task. -->
+  <!-- endinject -->
 
-<!-- endbuild -->
+  <!-- inject:partials -->
+  <!-- Angular templates will be converted to scripts and go here after Gulp `build` task. -->
+  <!-- endinject -->
+
+  <!-- endbuild -->
 
 </body>
+
 </html>
