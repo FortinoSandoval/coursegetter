@@ -10,9 +10,6 @@
       $document[0].documentElement.setAttribute('lang', data.language);
     });
 
-    $http.defaults.headers.common.Authorization = 'Basic YWRtaW46Q2h1Y2hpczQh';
-
-
     $log.debug('App run block end');
   }
 

@@ -111,9 +111,20 @@
     </p>
     <br />
   </div>
+  <div>
+    <p class="title is-3">Categorias</p>
+    <p class="subtitle is-4" ng-repeat="el in selectedListText" style="display: inline-block;width: 33%;">{{ el }}</p>
+    <br />
+  </div>
 
-  <div id="courseDesc"></div>
 
+  
+</div>
+<h3 class="title is-3" ng-if="vm.submitted">Descripcion del curso</h3>
+<div id="courseDesc"></div>
+
+<div ng-if="vm.submitted">
+  <br>
   <button class="button is-primary is-rounded" ng-click="vm.send()">
     Enviar
   </button>

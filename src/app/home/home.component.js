@@ -35,8 +35,8 @@
     ];
 
     $scope.selectedList = [];
-
-
+    $scope.selectedListText = [];
+    
 
     if (!localStorage.credentials) {
       vm.showLogin = true;
@@ -56,9 +56,11 @@
 
   
       vm.data.categories = [];
+      $scope.selectedListText = [];
       $scope.selectedList.forEach((el, index) => {
         if (el) {
           vm.data.categories.push(index);
+          $scope.selectedListText.push($scope.categories.find(x => x.id === index).text);
         }
       });
 
@@ -93,8 +95,13 @@
       
       /** ---- Get Desc ---- */
       
+      const subDescription = htmlData.substring(htmlData.indexOf('description__title'), htmlData.length);
+      const subDescription2 = subDescription.substring(0, subDescription.indexOf('audience__title'));
+      const subDescription3 = subDescription2.substring(subDescription2.indexOf('<div') + 18, subDescription2.length);
+      const subDescription4 = subDescription3.substring(0, subDescription3.indexOf('"audience') - 14);
+
       
-      
+      const descriptionElement = htmlToElement(decodeURI(subDescription4));
       
       
       /** ---- Get audience ---- */
@@ -113,11 +120,6 @@
           li.innerHTML = li.innerHTML + el.child[0].text
         }
       });
-      
-      console.log(ulAudRequeriments);
-
-
-
 
       const courseBtn = document.createElement('figure');
       courseBtn.classList.add('wp-block-image');
@@ -152,25 +154,34 @@
       courseLink.appendChild(linkImg);
       courseBtn.appendChild(courseLink);
 
-      const finalContent = h2Req.outerHTML + ulRequeriments.outerHTML + h2Desc.outerHTML + h2Aud.outerHTML + ulAudRequeriments.outerHTML + courseBtn.outerHTML;
+      const finalContent = h2Req.outerHTML + ulRequeriments.outerHTML + h2Desc.outerHTML + descriptionElement.outerHTML + h2Aud.outerHTML + ulAudRequeriments.outerHTML + courseBtn.outerHTML;
       vm.data.content = finalContent;
       /** --------------- */
-      const descDiv = document.querySelector('#courseDesc');
-      const stringContent = finalContent;
-      console.log(stringContent);
-      console.log(descDiv);
-      console.log(document.querySelector('#courseDesc'));
-      descDiv.appendChild(htmlToElement(stringContent));
+      const descDiv = document.getElementById('courseDesc');
+      const stringContent = h2Req.outerHTML + ulRequeriments.outerHTML + h2Desc.outerHTML + descriptionElement.outerHTML + h2Aud.outerHTML + ulAudRequeriments.outerHTML;
+
+      const descriptionInApp = htmlToElement(stringContent);
+      descriptionInApp.childNodes.forEach(element => {
+        console.log(element.nodeName);
+        if (element.nodeName === 'H2') {
+          element.classList = 'title is-3';
+        }
+      }); 
+      console.log(descriptionInApp);
+      descDiv.appendChild(descriptionInApp);
     };
 
     vm.reset = () => {
       vm.courseHtml = '';
       vm.submitted = false;
+      vm.courseLink = '';
       vm.data = {};
+      $scope.selectedList = [];
+      $scope.selectedListText = [];
+      document.getElementById('courseDesc').innerHTML = '';
     };
 
     vm.send = () => {
-      console.log(vm.data);
       vm.httpSendPost(vm.data).then(() => {
         vm.reset();
       });
@@ -183,8 +194,9 @@
         image: vm.image,
         basic: authenticateUser(username, password)
       }
-
-      return $http.post('/post', DTO);
+      const apiUrl = 'https://coursegetter.herokuapp.com/post';
+      const isLocalhost = location.hostname === 'localhost';
+      return $http.post(isLocalhost ? apiUrl : '/post', DTO);
     };
 
     function authenticateUser(username, password) {
