@@ -1,3 +1,4 @@
+<!-- Login Form -->
 <div ng-if="vm.showLogin" class="login-form">
   <form class="" ng-submit="vm.saveCredentials()">
     <div class="field">
@@ -12,30 +13,48 @@
         <input required class="input" ng-model="vm.password" type="password" placeholder="Enter your password">
       </div>
     </div>
-    <input type="submit" value="Save" />
+    <input type="submit" class="button is-primary" value="Save" />
   </form>
 </div>
-<div ng-if="!vm.showLogin && !vm.submitted" class="form">
-  <label for="udemyUrl">Udemy course html</label>
-  <br />
-  <textarea ng-model="vm.courseHtml"></textarea>
-  <br />
-  <label for="udemyUrl">discount</label>
-  <br />
-  <input ng-model="vm.data.discount" />
-  <br>
-  <label for="udemyUrl">udemy url</label>
-  <br />
-  <input type="text" ng-model="vm.courseLink">
-  <br />
-  <div ng-repeat="cat in categories">
-    <input type="checkbox" id="{{ cat.id }}" ng-model="selectedList[cat.id]" />
-    <label for="{{ cat.id }}">{{ cat.text }}</label>
-  </div>
 
-  <br />
-  <button ng-click="vm.getInfo()">Get Information</button>
+
+
+<!-- Basic Information Form -->
+<div ng-if="!vm.showLogin && !vm.submitted">
+  <form class="" ng-submit="vm.getInfo()">
+    <div class="field">
+      <label class="label">HTML</label>
+      <div class="control">
+        <textarea required class="textarea" ng-model="vm.courseHtml" placeholder="Course HTML"></textarea>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Descuento</label>
+      <div class="control">
+        <input required ng-model="vm.data.discount" class="input" type="number" placeholder="Ingresa el descuento">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">URL Del Curso</label>
+      <div class="control">
+        <input required ng-model="vm.courseLink" class="input" type="text" placeholder="URL del curso">
+      </div>
+    </div>
+
+    <div class="categories-selection">
+      <label class="checkbox" ng-repeat="cat in categories">
+        <input type="checkbox" ng-model="selectedList[cat.id]">
+        {{ cat.text }}
+      </label>
+    </div>
+
+    <input type="submit" class="button is-primary" value="Obtener Información" />
+  </form>
 </div>
+
+<!-- Information Preview -->
 <div id="response" ng-if="vm.submitted">
   <h2>son correstos los datos?</h2>
   <div>
