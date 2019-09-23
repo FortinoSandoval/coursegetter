@@ -4,20 +4,30 @@
     <div class="field">
       <label class="label">Username</label>
       <div class="control">
-        <input required class="input" ng-model="vm.username" type="text" placeholder="Enter your username">
+        <input
+          required
+          class="input"
+          ng-model="vm.username"
+          type="text"
+          placeholder="Enter your username"
+        />
       </div>
     </div>
     <div class="field">
       <label class="label">Password</label>
       <div class="control">
-        <input required class="input" ng-model="vm.password" type="password" placeholder="Enter your password">
+        <input
+          required
+          class="input"
+          ng-model="vm.password"
+          type="password"
+          placeholder="Enter your password"
+        />
       </div>
     </div>
     <input type="submit" class="button is-primary is-rounded" value="Save" />
   </form>
 </div>
-
-
 
 <!-- Basic Information Form -->
 <div ng-if="!vm.showLogin && !vm.submitted">
@@ -25,59 +35,88 @@
     <div class="field">
       <label class="label">HTML</label>
       <div class="control">
-        <textarea required class="textarea" ng-model="vm.courseHtml" placeholder="Course HTML"></textarea>
+        <textarea
+          required
+          class="textarea"
+          ng-model="vm.courseHtml"
+          placeholder="Course HTML"
+        ></textarea>
       </div>
     </div>
 
     <div class="field">
       <label class="label">Descuento</label>
       <div class="control">
-        <input required ng-model="vm.data.discount" class="input" type="number" placeholder="Ingresa el descuento">
+        <input
+          required
+          ng-model="vm.data.discount"
+          class="input"
+          type="number"
+          placeholder="Ingresa el descuento"
+        />
       </div>
     </div>
 
     <div class="field">
       <label class="label">URL Del Curso</label>
       <div class="control">
-        <input required ng-model="vm.courseLink" class="input" type="text" placeholder="URL del curso">
+        <input
+          required
+          ng-model="vm.courseLink"
+          class="input"
+          type="text"
+          placeholder="URL del curso"
+        />
       </div>
     </div>
 
     <div class="categories-selection">
       <label class="checkbox" ng-repeat="cat in categories">
-        <input type="checkbox" ng-model="selectedList[cat.id]">
+        <input type="checkbox" ng-model="selectedList[cat.id]" />
         {{ cat.text }}
       </label>
     </div>
 
-    <input type="submit" class="button is-primary is-rounded" value="Obtener Información" />
+    <input
+      type="submit"
+      class="button is-primary is-rounded"
+      value="Obtener Información"
+    />
   </form>
 </div>
 
 <!-- Information Preview -->
 <div id="response" ng-if="vm.submitted">
-  <h1>Previsualización</h1>
+  <h1 class="title is-1">Previsualización</h1>
   <div>
     <h3 class="title is-3">Título</h3>
-    <p class="title is-4">
+    <p class="subtitle is-4">
       {{
         vm.data.discount === 'FREE'
           ? '[FREE] ' + vm.data.title + ' [Udemy]'
           : '[' + vm.data.discount + '% OFF] ' + vm.data.title + ' [Udemy]'
       }}
     </p>
+    <br />
   </div>
   <div>
     <h3 class="title is-3">Extracto</h3>
-    <p class="title is-4">{{ vm.data.excerpt }}</p>
+    <p class="subtitle is-4">{{ vm.data.excerpt }}</p>
   </div>
   <div>
     <h3 class="title is-3">Imagen</h3>
-    <p><img style="border: 1px solid black;" ng-src="{{ vm.image }}" /></p>
+    <p style="text-align: center;">
+      <img style="border: 1px solid black;" ng-src="{{ vm.image }}" />
+    </p>
+    <br />
   </div>
 
   <div id="courseDesc"></div>
 
-  <button class="button is-primary is-rounded" ng-click="vm.send()">Enviar</button>
-  <button class="button is-danger is-rounded" ng-click="vm.reset()">Reestablecer</button>
+  <button class="button is-primary is-rounded" ng-click="vm.send()">
+    Enviar
+  </button>
+  <button class="button is-danger is-rounded" ng-click="vm.reset()">
+    Reestablecer
+  </button>
 </div>
