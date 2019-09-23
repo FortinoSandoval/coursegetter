@@ -155,6 +155,7 @@
       const finalContent = h2Req.outerHTML + ulRequeriments.outerHTML + h2Desc.outerHTML + h2Aud.outerHTML + ulAudRequeriments.outerHTML + courseBtn.outerHTML;
       vm.data.content = finalContent;
       /** --------------- */
+      console.log(finalContent);
     };
 
     vm.reset = () => {
