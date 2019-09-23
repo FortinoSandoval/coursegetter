@@ -59,6 +59,10 @@ app.post('/post', (req, resp, next) => {
       fs.unlinkSync(__dirname + `/${imageName}`);
 
       // request options for post creation
+      finalData.featured_media = finalImageId;
+      finalData.title = finalTitle;
+      finalData.status = 'publish';
+      
       const postOptions = {
         url: 'https://techcoursesite.com/wp-json/wp/v2/posts',
         headers: {
@@ -69,8 +73,6 @@ app.post('/post', (req, resp, next) => {
         body: finalData,
         json: true
       };
-      finalData.featured_media = finalImageId;
-      finalData.title = finalTitle; 
       request(postOptions, (error, response, body) => {
         resp.send(body);
       });
