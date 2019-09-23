@@ -25,6 +25,12 @@
       { id: 6, text: 'IT and Software' },
       { id: 10, text: 'Marketing' },
       { id: 18, text: 'Mobile Apps' },
+      { id: 12, text: 'Photography' },
+      { id: 19, text: 'Programming Languages' },
+      { id: 16, text: 'Web Development' },
+      { id: 22, text: 'Software Testing' },
+      { id: 15, text: 'Teaching & Academics' },
+      { id: 23, text: 'Software Engineering' },
       { id: 3, text: 'Development' }
     ];
 
