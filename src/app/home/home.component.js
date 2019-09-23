@@ -213,7 +213,6 @@
       const apiUrl = 'https://coursegetter.herokuapp.com/post';
       const isLocalhost = location.hostname === 'localhost';
       console.log(DTO);
-      return;
       return $http.post(isLocalhost ? apiUrl : '/post', DTO);
     };
 
