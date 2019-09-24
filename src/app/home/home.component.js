@@ -250,7 +250,7 @@
           // bulmaCalendar instance is available as element.bulmaCalendar
           element.bulmaCalendar.on('select', datepicker => {
             console.log(datepicker.data.value());
-            vm.data.date = datepicker.data.value();
+            // vm.data.date = datepicker.data.value();
           });
         }
         document.getElementById('calendar').style.display = 'block';
