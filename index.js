@@ -61,7 +61,6 @@ app.post('/post', (req, resp, next) => {
       // request options for post creation
       finalData.featured_media = finalImageId;
       finalData.title = finalTitle;
-      finalData.status = 'publish';
       
       const postOptions = {
         url: 'https://techcoursesite.com/wp-json/wp/v2/posts',
