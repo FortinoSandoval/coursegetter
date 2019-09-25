@@ -166,6 +166,10 @@
         }
       });
 
+      if (vm.courseLink.indexOf('source:') > 0) {
+        vm.courseLink = vm.courseLink.substring(vm.courseLink.indexOf('source:') + 7)
+      }
+      
       /** Go to course link */
       const courseBtn = document.createElement('figure');
       courseBtn.classList.add('wp-block-image');
@@ -238,14 +242,14 @@
       const subHours = htmlData.substring(htmlData.indexOf('video-content-length') + 25);
       const hours = subHours.substring(0, subHours.indexOf(' hours'));
       
-      const summaryElement = `<div>
+      const summaryElement = `<div style="margin-bottom: 1em;">
       <h2>Course Summary</h2>
       <div><b>Course duration</b>: <label style="margin: 0;">${hours} Hours</label></div>
       <div> <b>Instructor</b>: <label style="margin: 0;">${subInstructor3}</label></div>
       <div> <b>Language</b>: <label style="margin: 0;">${lang}</label></div>
       <div> <b>Students enrolled</b>: <label style="margin: 0;">${enrolledUsers}</label></div>
       <div><b>Certificate of Completion</b>: <label style="margin: 0;">YES!</label> </div>
-    </div><br>`;
+      </div>`;
 
 
       // Put all elements together and send in content property to data
@@ -278,7 +282,7 @@
 
     vm.send = () => {
       vm.httpSendPost(vm.data).then(({ data }) => {
-        if (data.statusCode === 200) {
+        if (data.statusCode === 201) {
           vm.reset();
           bulmaToast.toast({
             message: 'Information sent!',
