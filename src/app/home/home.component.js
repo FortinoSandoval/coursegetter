@@ -299,7 +299,6 @@
       const dto = {
         basic: authenticateUser(username, password)
       };
-      console.log(dto);
       const apiUrl = 'https://coursegetter.herokuapp.com/auth';
       const isLocalhost = location.hostname === 'localhost';
       return $http.post(isLocalhost ? apiUrl : '/auth', dto);
@@ -345,7 +344,6 @@
         if (element) {
           // bulmaCalendar instance is available as element.bulmaCalendar
           element.bulmaCalendar.on('select', datepicker => {
-            console.log(moment(datepicker.data.value()).format());
             vm.data.date = moment(datepicker.data.value()).format();
           });
         }
