@@ -81,8 +81,6 @@
           });
         }
       })
-      // eslint-disable-next-line angular/json-functions
-      
     };
 
     $scope.logout = () => {
@@ -98,8 +96,6 @@
     };
 
     vm.getInfo = () => {
-      
-      
       vm.data.categories = [];
       $scope.selectedListText = [];
       $scope.selectedList.forEach((el, index) => {
@@ -108,19 +104,32 @@
           $scope.selectedListText.push($scope.categories.find(x => x.id === index).text);
         }
       });
-      if($scope.selectedListText.length === 0) return;
 
+      if($scope.selectedListText.length === 0) {
+        bulmaToast.toast({
+          message: 'Selecciona al menos 1 categoria.',
+          duration: 2000,
+          type: 'is-danger',
+          position: 'bottom-right',
+          animate: { in: 'fadeIn', out: 'fadeOut' }
+        });
+        return;
+      }
+
+      // Get HTML Data from textarea
       const htmlData = JSON.stringify(vm.courseHtml);
 
       vm.submitted = true;
 
+      // Create H2 elements for sub headers
       var h2Req = document.createElement('h2');
-      h2Req.appendChild(document.createTextNode('Requirements'));
-      var h2Desc = document.createElement('h2');
-      h2Desc.appendChild(document.createTextNode('Description'));
+      h2Req.appendChild(document.createTextNode('Knowledge necessary to take the course'));
+      var h2Learn = document.createElement('h2');
+      h2Learn.appendChild(document.createTextNode('At the end of the course you\'ll be able to:'));
       var h2Aud = document.createElement('h2');
       h2Aud.appendChild(document.createTextNode('Why you should take this course:'));
 
+      // Ad Element
       const adElement = htmlToElement('<div id="801385746" class="post-footer-mobile-ad" style="margin-top: 3em;"> <script type="text/javascript"> try { window._mNHandle.queue.push(function (){ window._mNDetails.loadTag("801385746", "300x250", "801385746"); }); } catch (error) {} </script> </div>');
   
       
@@ -128,15 +137,15 @@
       const subRequiremenets = htmlData.substring(htmlData.indexOf('requirements__content'), htmlData.length);
       const subRequiremenets2 = subRequiremenets.substring(subRequiremenets.indexOf('<ul'), subRequiremenets.length);
       const subRequiremenets3 = subRequiremenets2.substring(0, subRequiremenets2.indexOf('</ul>') + 5);
-      const requiremenets = decodeURI(subRequiremenets3)
+      const requi = decodeURI(subRequiremenets3)
       
-      const htmlJsonString = html2json(decodeURI(requiremenets));
-      const ulRequeriments = document.createElement('ul');
+      const htmlJsonString = html2json(decodeURI(requi));
+      const requiremenets = document.createElement('ul');
       
       htmlJsonString.child[0].child.forEach(el => {
         if (el.node === 'element') {
           var li = document.createElement('li');
-          ulRequeriments.appendChild(li);
+          requiremenets.appendChild(li);
           li.innerHTML = li.innerHTML + el.child[0].text
         }
       });
@@ -147,17 +156,16 @@
 
 
       const htmlAudJsonString = html2json(decodeURI(subAudience2));
-      const ulAudRequeriments = document.createElement('ul');
+      const audienceList = document.createElement('ul');
     
       htmlAudJsonString.child[0].child.forEach(el => {
         if (el.node === 'element') {
           var li = document.createElement('li');
-          ulAudRequeriments.appendChild(li);
+          audienceList.appendChild(li);
           li.innerHTML = li.innerHTML + el.child[0].text
         }
       });
 
-      
       /** Go to course link */
       const courseBtn = document.createElement('figure');
       courseBtn.classList.add('wp-block-image');
@@ -192,16 +200,62 @@
       courseLink.appendChild(linkImg);
       courseBtn.appendChild(courseLink);
 
-      const finalContent = h2Req.outerHTML + ulRequeriments.outerHTML + adElement.outerHTML + h2Aud.outerHTML + ulAudRequeriments.outerHTML + courseBtn.outerHTML;
-      console.log(finalContent);
+      /** What you'll learn information */
+      const skillsToLean = [];
+      let subKnowledge = htmlData;
+      while(subKnowledge.indexOf('what-you-get__text') !== -1) {
+        subKnowledge = subKnowledge.substring(subKnowledge.indexOf('what-you-get__text') + 21, subKnowledge.length);
+        skillsToLean.push(subKnowledge.substring(0, subKnowledge.indexOf('</span>')));
+      }
+
+      const skillsList = document.createElement('ul');
+    
+      skillsToLean.forEach((el, index) => {
+        if (index % 2 !== 0) {
+          var li = document.createElement('li');
+          skillsList.appendChild(li);
+          li.innerHTML = li.innerHTML + el;
+        }
+      });
+
+      /** Course summary */
+
+      // Instructor get
+      const subInstructor = htmlData.substring(htmlData.indexOf('instructor-name-top') + 25, htmlData.length);
+      const subInstructor2 = subInstructor.substring(subInstructor.indexOf('>') + 3);
+      const subInstructor3 = subInstructor2.substring(0, subInstructor2.indexOf('<'));
+
+      // Enrolled users get
+      const subEnrolled = htmlData.substring(htmlData.indexOf('enrollment') + 15);
+      const enrolledUsers = subEnrolled.substring(0, subEnrolled.indexOf('students') - 1);
+      
+      // Enrolled users get
+      const subLang = htmlData.substring(htmlData.indexOf('clp-lead__locale'));
+      const subLang2 = subLang.substring(subLang.indexOf('</span>') + 9);
+      const lang = subLang2.substring(0, subLang2.indexOf('</d') - 2);
+      
+      // hours
+      const subHours = htmlData.substring(htmlData.indexOf('video-content-length') + 25);
+      const hours = subHours.substring(0, subHours.indexOf(' hours'));
+      
+      const summaryElement = `<div>
+      <h2>Course Summary</h2>
+      <div><b>Course duration</b>: <label style="margin: 0;">${hours} Hours</label></div>
+      <div> <b>Instructor</b>: <label style="margin: 0;">${subInstructor3}</label></div>
+      <div> <b>Language</b>: <label style="margin: 0;">${lang}</label></div>
+      <div> <b>Students enrolled</b>: <label style="margin: 0;">${enrolledUsers}</label></div>
+      <div><b>Certificate of Completion</b>: <label style="margin: 0;">YES!</label> </div>
+    </div><br>`;
+
+
+      // Put all elements together and send in content property to data
+      const finalContent = htmlToElement(summaryElement).outerHTML + h2Learn.outerHTML + skillsList.outerHTML + h2Aud.outerHTML + audienceList.outerHTML + adElement.outerHTML +  h2Req.outerHTML + requiremenets.outerHTML + courseBtn.outerHTML;
+
       vm.data.content = finalContent;
-
-
-
 
       // Display description preview in app
       const descDiv = document.getElementById('courseDesc');
-      const stringContent = h2Req.outerHTML + ulRequeriments.outerHTML + h2Aud.outerHTML + ulAudRequeriments.outerHTML;
+      const stringContent = htmlToElement(summaryElement).outerHTML + h2Learn.outerHTML + skillsList.outerHTML + h2Aud.outerHTML + audienceList.outerHTML +  h2Req.outerHTML + requiremenets.outerHTML + courseBtn.outerHTML;
 
       const descriptionInApp = htmlToElement(stringContent);
       descriptionInApp.childNodes.forEach(element => {
