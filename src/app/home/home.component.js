@@ -48,7 +48,7 @@
       },
       {
         esp: 'Programar',
-        val: 'publish'
+        val: 'future'
       }
     ];
 
@@ -242,9 +242,8 @@
     }
 
     $scope.publishSelect = opt => {
-      vm.data.statusEsp = opt.esp;
-      vm.data.status = opt.val;
-      if (opt.esp === 'Programar') {
+      vm.data.status = opt;
+      if (opt === 'future') {
         // Initialize all input of date type.
         bulmaCalendar.attach('[type="date"]', {
           type: 'datetime',
@@ -260,8 +259,8 @@
         if (element) {
           // bulmaCalendar instance is available as element.bulmaCalendar
           element.bulmaCalendar.on('select', datepicker => {
-            console.log(datepicker.data.value());
-            vm.data.date = datepicker.data.value();
+            console.log(moment(datepicker.data.value()).format());
+            vm.data.date = moment(datepicker.data.value()).format();
           });
         }
         document.getElementById('calendar').style.display = 'block';
