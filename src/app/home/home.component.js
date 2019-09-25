@@ -64,9 +64,12 @@
         username: vm.username,
         password: vm.password
       };
-      $scope.auth(credentials).then(res => {
-        localStorage.setItem('credentials', JSON.stringify(credentials));
-        $state.reload();
+      $scope.auth(credentials).then(({data}) => {
+        if (data.statusCode === 401) $scope.invalidCredentials = true;
+        else if (data.statusCode === 200) {
+          localStorage.setItem('credentials', JSON.stringify(credentials));
+          $state.reload();
+        }
       })
       // eslint-disable-next-line angular/json-functions
       
@@ -210,6 +213,7 @@
       const dto = {
         basic: authenticateUser(username, password)
       };
+      console.log(dto);
       const apiUrl = 'https://coursegetter.herokuapp.com/auth';
       const isLocalhost = location.hostname === 'localhost';
       return $http.post(isLocalhost ? apiUrl : '/auth', dto);
