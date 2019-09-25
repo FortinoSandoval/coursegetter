@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/dist/index.html'));
 });
 
-app.get('/auth', (req, res) => {
+app.post('/auth', (req, res) => {
   const basic = req.body.basic;
 
   const postOptions = {
