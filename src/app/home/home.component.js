@@ -121,7 +121,7 @@
       var h2Aud = document.createElement('h2');
       h2Aud.appendChild(document.createTextNode('Why you should take this course:'));
 
-      const adElement = htmlToElement('<div id="547735562" style="display:none" class="post-header-mobile"> <script type="text/javascript"> try { window._mNHandle.queue.push(function (){ window._mNDetails.loadTag("547735562", "300x50", "547735562"); }); } catch (error) {} </script> </div>');
+      const adElement = htmlToElement('<div id="801385746" class="post-footer-mobile-ad" style="margin-top: 3em;"> <script type="text/javascript"> try { window._mNHandle.queue.push(function (){ window._mNDetails.loadTag("801385746", "300x250", "801385746"); }); } catch (error) {} </script> </div>');
   
       
       /** ---- Get Requirements ---- */
@@ -140,24 +140,12 @@
           li.innerHTML = li.innerHTML + el.child[0].text
         }
       });
-      
-      /** ---- Get Desc ---- */
-      
-      const subDescription = htmlData.substring(htmlData.indexOf('description__title'), htmlData.length);
-      const subDescription2 = subDescription.substring(0, subDescription.indexOf('audience__title'));
-      const subDescription3 = subDescription2.substring(subDescription2.indexOf('<div') + 18, subDescription2.length);
-      const subDescription4 = subDescription3.substring(0, subDescription3.indexOf('"audience') - 14);
-
-      
-      const descriptionElement = htmlToElement(decodeURI(subDescription4));
-      
-      
+            
       /** ---- Get audience ---- */
       const subAudience = htmlData.substring(htmlData.indexOf('audience__list') - 12, htmlData.length);
       const subAudience2 = subAudience.substring(0, subAudience.indexOf('</ul>') + 5);
 
 
-      
       const htmlAudJsonString = html2json(decodeURI(subAudience2));
       const ulAudRequeriments = document.createElement('ul');
     
@@ -169,6 +157,8 @@
         }
       });
 
+      
+      /** Go to course link */
       const courseBtn = document.createElement('figure');
       courseBtn.classList.add('wp-block-image');
       const courseLink = document.createElement('a');
@@ -178,27 +168,27 @@
       const linkImg = document.createElement('img');
       linkImg.src = 'https://techcoursesite.com/wp-content/uploads/2019/09/course-link.png';
 
-      /** --------------- */
+      /** Title get */
       const subTitle = htmlData.substring(htmlData.indexOf('<h1'), htmlData.indexOf('</h1'));
       var title = subTitle.substring(subTitle.indexOf('\\n') + 2, subTitle.length - 2);
       title = title.replace(/&amp;/g, '&');
       vm.data.title = title;
 
-
+      /** Extract get */
       const subHeadLine = htmlData.substring(htmlData.indexOf('clp-lead__headline'));
       const subHeadLine2 = subHeadLine.substring(subHeadLine.indexOf('\\n') + 2);
       var headLine = subHeadLine2.substring(0, subHeadLine2.indexOf('\\n'));
       headLine = headLine.replace(/&amp;/g, '&');
       vm.data.excerpt = headLine;
 
+      /** Featured image */
       const subImage = htmlData.substring(htmlData.indexOf('srcset=\\"') + 9);
       const subImage2 = subImage.substring(subImage.indexOf('1x') + 4);
       const image = subImage2.substring(0, subImage2.indexOf('2x') - 1);
-
       vm.image = image;
-
       linkImg.alt = title;
 
+      /** Create course link btn */
       courseLink.appendChild(linkImg);
       courseBtn.appendChild(courseLink);
 
@@ -271,10 +261,6 @@
 
     function authenticateUser(username, password) {
       return "Basic " + btoa(username + ":" + password);
-    }
-
-    function htmlDecode(value){ 
-      return $('<div/>').html(value).text(); 
     }
 
     function htmlToElement(html) {
