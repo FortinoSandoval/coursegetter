@@ -254,6 +254,15 @@
       <div><b>Certificate of Completion</b>: <label style="margin: 0;">YES!</label> </div>
       </div>`;
 
+      const summaryElementDesc = `<div style="margin-bottom: 1em;">
+      <h2 class="title is-3">Course Summary</h2>
+      <div><b>Course duration</b>: <label style="margin: 0;">${hours} Hours</label></div>
+      <div> <b>Instructor</b>: <label style="margin: 0;">${subInstructor3}</label></div>
+      <div> <b>Language</b>: <label style="margin: 0;">${lang}</label></div>
+      <div> <b>Students enrolled</b>: <label style="margin: 0;">${enrolledUsers}</label></div>
+      <div><b>Certificate of Completion</b>: <label style="margin: 0;">YES!</label> </div>
+      </div>`;
+
 
       // Put all elements together and send in content property to data
       const finalContent = htmlToElement(summaryElement).outerHTML + h2Learn.outerHTML + skillsList.outerHTML + h2Aud.outerHTML + audienceList.outerHTML + adElement.outerHTML +  h2Req.outerHTML + requiremenets.outerHTML + courseBtn.outerHTML;
@@ -262,7 +271,7 @@
 
       // Display description preview in app
       const descDiv = document.getElementById('courseDesc');
-      const stringContent = htmlToElement(summaryElement).outerHTML + h2Learn.outerHTML + skillsList.outerHTML + h2Aud.outerHTML + audienceList.outerHTML +  h2Req.outerHTML + requiremenets.outerHTML + courseBtn.outerHTML;
+      const stringContent = htmlToElement(summaryElementDesc).outerHTML + h2Learn.outerHTML + skillsList.outerHTML + h2Aud.outerHTML + audienceList.outerHTML +  h2Req.outerHTML + requiremenets.outerHTML + courseBtn.outerHTML;
 
       const descriptionInApp = htmlToElement(stringContent);
       descriptionInApp.childNodes.forEach(element => {
@@ -276,6 +285,7 @@
     vm.reset = () => {
       vm.courseHtml = '';
       vm.submitted = false;
+      vm.tagString = '';
       vm.courseLink = '';
       vm.data = {
         status: 'draft',

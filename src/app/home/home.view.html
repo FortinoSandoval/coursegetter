@@ -40,18 +40,18 @@
       <form class="" ng-submit="vm.saveCredentials()">
         <div class="field">
           <label class="label">Username</label>
-            <div class="control">
-              <input required ng-class="{'is-danger': invalidCredentials}" class="input" ng-model="vm.username"
-                type="text" placeholder="Enter your username" />
-            </div>
+          <div class="control">
+            <input required ng-class="{'is-danger': invalidCredentials}" class="input" ng-model="vm.username"
+              type="text" placeholder="Enter your username" />
+          </div>
         </div>
         <div class="field">
           <label class="label">Password</label>
-            <div class="control">
-              <input required ng-class="{'is-danger': invalidCredentials}" class="input" ng-model="vm.password"
-                type="password" placeholder="Enter your password" />
-            </div>
-            <p ng-if="invalidCredentials" class="help is-danger">Username or password is invalid</p>
+          <div class="control">
+            <input required ng-class="{'is-danger': invalidCredentials}" class="input" ng-model="vm.password"
+              type="password" placeholder="Enter your password" />
+          </div>
+          <p ng-if="invalidCredentials" class="help is-danger">Username or password is invalid</p>
         </div>
         <input ng-disabled="loading" type="submit" class="button is-primary is-rounded" value="Login" />
       </form>
@@ -77,9 +77,9 @@
         <div class="field">
           <label class="label">Tags (separados por comas)</label>
           <div class="control">
-              <input required ng-model="vm.tagString" class="input" type="text" placeholder="tag1, tag2" />
-            </div>
+            <input required ng-model="vm.tagString" class="input" type="text" placeholder="tag1, tag2" />
           </div>
+        </div>
 
         <div class="field">
           <label class="label">Descuento</label>
@@ -156,7 +156,13 @@
       </div>
       <div>
         <p class="title is-3">Categorias</p>
-        <p class="subtitle is-4" ng-repeat="el in selectedListText" style="display: inline-block;width: 33%;">{{ el }}
+        <p class="subtitle is-4" ng-repeat="cat in selectedListText" style="display: inline-block;width: 33%;">{{ cat }}
+        </p>
+        <br />
+      </div>
+      <div>
+        <p class="title is-3">Tags</p>
+        <p class="subtitle is-4" ng-repeat="tag in vm.data.tags" style="display: inline-block;width: 33%;">{{ tag }}
         </p>
         <br />
       </div>
