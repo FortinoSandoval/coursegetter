@@ -20,8 +20,25 @@ const download = function(uri, filename, callback) {
   });
 };
 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/dist/index.html'));
+});
+
+app.get('/auth', (req, res) => {
+  const basic = req.body.basic;
+
+  const postOptions = {
+    url: 'https://techcoursesite.com/wp-json/wp/v2/posts',
+    headers: {
+      'User-Agent': 'request',
+      Authorization: basic
+    },
+    method: 'GET',
+    json: true
+  };
+  request(postOptions, (error, response, body) => {
+    res.send(body);
+  });
 });
 
 // Post creation endpoint
