@@ -22,7 +22,7 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-light" ng-click="logout()">
+          <a class="button is-light" ng-if="!vm.showLogin" ng-click="logout()">
             Logout
           </a>
         </div>
