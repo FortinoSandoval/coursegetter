@@ -5,6 +5,7 @@
 
 .categories-selection .checkbox {
   width: 23%;
+  display: inline-block;
 }
 
 .datetimepicker-header {
@@ -14,4 +15,16 @@
 .footer {
   background-color: rgb(34, 27, 27);
   color: #fff;
+}
+
+.categories-selection {
+  margin-bottom: 1em;
+}
+
+// mobile phone
+@media only screen and (max-width: 991px) {
+	.categories-selection .checkbox {
+    display: block;
+    width: 100%;
+  }
 }

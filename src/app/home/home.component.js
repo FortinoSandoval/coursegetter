@@ -274,7 +274,10 @@
       vm.courseHtml = '';
       vm.submitted = false;
       vm.courseLink = '';
-      vm.data = {};
+      vm.data = {
+        status: 'draft',
+        discount: $scope.selectOpts[0]
+      };
       $scope.selectedList = [];
       $scope.selectedListText = [];
       document.getElementById('courseDesc').innerHTML = '';
