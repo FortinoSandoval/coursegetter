@@ -60,19 +60,41 @@
     }
 
     vm.saveCredentials = () => {
+      $scope.invalidCredentials = false;
+      $scope.loading = true;
       const credentials = {
         username: vm.username,
         password: vm.password
       };
       $scope.auth(credentials).then(({data}) => {
+        $scope.loading = false;
         if (data.statusCode === 401) $scope.invalidCredentials = true;
         else if (data.statusCode === 200) {
           localStorage.setItem('credentials', JSON.stringify(credentials));
           $state.reload();
+          bulmaToast.toast({
+            message: 'Logged in!',
+            duration: 2000,
+            type: 'is-primary',
+            position: 'bottom-right',
+            animate: { in: 'fadeIn', out: 'fadeOut' }
+          });
         }
       })
       // eslint-disable-next-line angular/json-functions
       
+    };
+
+    $scope.logout = () => {
+      localStorage.clear();
+      $state.reload();
+      bulmaToast.toast({
+        message: 'Logged out!',
+        duration: 2000,
+        type: 'is-primary',
+        position: 'bottom-right',
+        animate: { in: 'fadeIn', out: 'fadeOut' }
+      });
     };
 
     vm.getInfo = () => {
@@ -97,7 +119,9 @@
       var h2Desc = document.createElement('h2');
       h2Desc.appendChild(document.createTextNode('Description'));
       var h2Aud = document.createElement('h2');
-      h2Aud.appendChild(document.createTextNode('Who this course is for:'));
+      h2Aud.appendChild(document.createTextNode('Why you should take this course:'));
+
+      const adElement = htmlToElement('<div id="547735562" style="display:none" class="post-header-mobile"> <script type="text/javascript"> try { window._mNHandle.queue.push(function (){ window._mNDetails.loadTag("547735562", "300x50", "547735562"); }); } catch (error) {} </script> </div>');
   
       
       /** ---- Get Requirements ---- */
@@ -178,11 +202,16 @@
       courseLink.appendChild(linkImg);
       courseBtn.appendChild(courseLink);
 
-      const finalContent = h2Req.outerHTML + ulRequeriments.outerHTML + h2Desc.outerHTML + descriptionElement.outerHTML + h2Aud.outerHTML + ulAudRequeriments.outerHTML + courseBtn.outerHTML;
+      const finalContent = h2Req.outerHTML + ulRequeriments.outerHTML + adElement.outerHTML + h2Aud.outerHTML + ulAudRequeriments.outerHTML + courseBtn.outerHTML;
+      console.log(finalContent);
       vm.data.content = finalContent;
-      /** --------------- */
+
+
+
+
+      // Display description preview in app
       const descDiv = document.getElementById('courseDesc');
-      const stringContent = h2Req.outerHTML + ulRequeriments.outerHTML + h2Desc.outerHTML + descriptionElement.outerHTML + h2Aud.outerHTML + ulAudRequeriments.outerHTML;
+      const stringContent = h2Req.outerHTML + ulRequeriments.outerHTML + h2Aud.outerHTML + ulAudRequeriments.outerHTML;
 
       const descriptionInApp = htmlToElement(stringContent);
       descriptionInApp.childNodes.forEach(element => {
@@ -204,8 +233,17 @@
     };
 
     vm.send = () => {
-      vm.httpSendPost(vm.data).then(() => {
-        vm.reset();
+      vm.httpSendPost(vm.data).then(({ data }) => {
+        if (data.statusCode === 200) {
+          vm.reset();
+          bulmaToast.toast({
+            message: 'Information sent!',
+            duration: 2000,
+            type: 'is-info',
+            position: 'bottom-right',
+            animate: { in: 'fadeIn', out: 'fadeOut' }
+          });
+        }
       });
     };
 

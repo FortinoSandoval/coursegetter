@@ -88,8 +88,8 @@ app.post('/post', (req, resp, next) => {
         body: finalData,
         json: true
       };
-      request(postOptions, (error, response, body) => {
-        resp.send(body);
+      request(postOptions, (error, response) => {
+        resp.send(response);
       });
     });
   });
