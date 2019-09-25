@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/auth', (req, res) => {
-  const basic = req.body.basic;
+  const basic = req.body.Authorization;
 
   const postOptions = {
     url: 'https://techcoursesite.com/wp-json/wp/v2/posts',
@@ -36,8 +36,8 @@ app.post('/auth', (req, res) => {
     method: 'GET',
     json: true
   };
-  request(postOptions, (error, response, body) => {
-    res.send(body);
+  request(postOptions, (error, response) => {
+    res.send(response);
   });
 });
 
