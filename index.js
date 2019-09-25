@@ -5,6 +5,7 @@ const request = require('request');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+const async = require('async')
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -40,56 +41,91 @@ app.post('/auth', (req, res) => {
   });
 });
 
+
 // Post creation endpoint
 app.post('/post', (req, resp, next) => {
   // Basic auth
   const basic = req.body.basic;
-  const image = req.body.image;
-  const finalData = req.body.data;
-  const finalTitle = finalData.discount === 'FREE' ? `[FREE] ${finalData.title} [Udemy]` : `[${finalData.discount}% OFF] ${finalData.title} [Udemy]`;
-  const imageName = image.substring(image.indexOf('480x270') + 8, image.length);
+  const stringTags = req.body.data.tags;
+  req.body.data.tags = [];
 
-
-  download(image, imageName, function () {
-    // Form data for image upload to wp media
-    const formData = {
-      file: fs.createReadStream(__dirname + `/${imageName}`)
-    };
-
-    // request options for image upload
-    const mediaOptions = {
-      url: 'https://techcoursesite.com/wp-json/wp/v2/media',
+  function postTags(tag, callback) {
+    const tagOptions = {
+      url: 'https://techcoursesite.com/wp-json/wp/v2/tags',
       headers: {
-        Authorization: basic,
-        'Content-Disposition': `attachment; filename="${imageName}`,
-        'content-type': 'application/octet-stream'
+        'User-Agent': 'request',
+        Authorization: basic
       },
       method: 'POST',
-      formData: formData
+      body: {
+        name: tag
+      },
+      json: true
     };
+  
+    request(tagOptions,
+      function(err, res, body) {
+        callback(err, body);
+      }
+    );
+  }
+    
+  async.map(stringTags, postTags, function (err, res) {
+    if (err) return console.log(err);
+    res.forEach(tagResp => {
+      if (tagResp.id) {
+        req.body.data.tags.push(tagResp.id)
+      } else if (tagResp.data.term_id) {
+        req.body.data.tags.push(tagResp.data.term_id)
+      }
+    });
+    const image = req.body.image;
+    const finalData = req.body.data;
+    const finalTitle = finalData.discount === 'FREE' ? `[FREE] ${finalData.title} [Udemy]` : `[${finalData.discount}% OFF] ${finalData.title} [Udemy]`;
+    const imageName = image.substring(image.indexOf('480x270') + 8, image.length);
 
-    request(mediaOptions, (error, response, body) => {
-      const finalImageId = JSON.parse(body).id;
 
-      // image delete
-      fs.unlinkSync(__dirname + `/${imageName}`);
+    download(image, imageName, function () {
+      // Form data for image upload to wp media
+      const formData = {
+        file: fs.createReadStream(__dirname + `/${imageName}`)
+      };
 
-      // request options for post creation
-      finalData.featured_media = finalImageId;
-      finalData.title = finalTitle;
-      
-      const postOptions = {
-        url: 'https://techcoursesite.com/wp-json/wp/v2/posts',
+      // request options for image upload
+      const mediaOptions = {
+        url: 'https://techcoursesite.com/wp-json/wp/v2/media',
         headers: {
-          'User-Agent': 'request',
-          Authorization: basic
+          Authorization: basic,
+          'Content-Disposition': `attachment; filename="${imageName}`,
+          'content-type': 'application/octet-stream'
         },
         method: 'POST',
-        body: finalData,
-        json: true
+        formData: formData
       };
-      request(postOptions, (error, response) => {
-        resp.send(response);
+
+      request(mediaOptions, (error, response, body) => {
+        const finalImageId = JSON.parse(body).id;
+
+        // image delete
+        fs.unlinkSync(__dirname + `/${imageName}`);
+
+        // request options for post creation
+        finalData.featured_media = finalImageId;
+        finalData.title = finalTitle;
+        
+        const postOptions = {
+          url: 'https://techcoursesite.com/wp-json/wp/v2/posts',
+          headers: {
+            'User-Agent': 'request',
+            Authorization: basic
+          },
+          method: 'POST',
+          body: finalData,
+          json: true
+        };
+        request(postOptions, (error, response) => {
+          resp.send(response);
+        });
       });
     });
   });

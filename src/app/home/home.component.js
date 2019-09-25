@@ -13,7 +13,8 @@
 
     vm.submitted = false;
     vm.data = {
-      categories: []
+      categories: [],
+      tags: []
     };
     $scope.categories = [
       { id: 50, text: '100% OFF' },
@@ -104,6 +105,8 @@
           $scope.selectedListText.push($scope.categories.find(x => x.id === index).text);
         }
       });
+
+      vm.data.tags = vm.tagString.split(',').map(str => str.trim())
 
       if($scope.selectedListText.length === 0) {
         bulmaToast.toast({
@@ -276,7 +279,8 @@
       vm.courseLink = '';
       vm.data = {
         status: 'draft',
-        discount: $scope.selectOpts[0]
+        discount: $scope.selectOpts[0],
+        tags: []
       };
       $scope.selectedList = [];
       $scope.selectedListText = [];

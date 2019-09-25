@@ -63,7 +63,7 @@
         <div class="field">
           <label class="label">URL Del Curso</label>
           <div class="control">
-            <input required ng-model="vm.courseLink" class="input" type="text" placeholder="URL del curso" />
+            <input required ng-model="vm.courseLink" class="input" type="text" placeholder="https://udemy.com/course" />
           </div>
         </div>
 
@@ -73,6 +73,13 @@
             <textarea required class="textarea" ng-model="vm.courseHtml" placeholder="Course HTML"></textarea>
           </div>
         </div>
+
+        <div class="field">
+          <label class="label">Tags (separados por comas)</label>
+          <div class="control">
+              <input required ng-model="vm.tagString" class="input" type="text" placeholder="tag1, tag2" />
+            </div>
+          </div>
 
         <div class="field">
           <label class="label">Descuento</label>
