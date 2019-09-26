@@ -60,7 +60,7 @@
     }
     vm.apiUrl = ''
     if (location.hostname === 'localhost' && location.port !== '4000') {
-      vm.apiUrl = 'https://coursegetter.herokuapp.com/';
+      vm.apiUrl = 'https://coursegetter.herokuapp.com';
     }
 
     vm.saveCredentials = () => {
@@ -108,10 +108,6 @@
           $scope.selectedListText.push($scope.categories.find(x => x.id === index).text);
         }
       });
-
-      if (vm.data.discount === 100) {
-        vm.data.categories.push(50);
-      }
 
       vm.data.tags = vm.tagString.split(',').map(str => str.trim())
 
@@ -197,6 +193,18 @@
       var title = subTitle.substring(subTitle.indexOf('\\n') + 2, subTitle.length - 2);
       title = title.replace(/&amp;/g, '&');
       vm.data.title = title;
+
+      if (vm.data.discount === 100) {
+        vm.data.categories.push(50);
+        vm.data.tags.push(`${title} coupon code`);
+        vm.data.tags.push(`udemy free course`);
+        vm.data.tags.push(`udemy discount`);
+      } else if (vm.data.discount !== 'FREE') {
+        vm.data.tags.push(`${title} coupon code`);
+        vm.data.tags.push(`udemy discount`);
+      }
+
+      console.log(vm.data.tags);
 
       /** Extract get */
       const subHeadLine = htmlData.substring(htmlData.indexOf('clp-lead__headline'));
@@ -313,7 +321,9 @@
       if (vm.bcalendar && vm.bcalendar[0]) {
         vm.bcalendar[0].clear();
       }
-      document.getElementById('calendar').style.display = 'none';
+      try {
+        document.getElementById('calendar').style.display = 'none';
+      } catch (error) {}
       vm.courseCoupon = '';
       vm.data = {
         status: 'publish',
