@@ -58,6 +58,10 @@
     if (!localStorage.credentials) {
       vm.showLogin = true;
     }
+    vm.apiUrl = ''
+    if (location.hostname === 'localhost' && location.port !== '4000') {
+      vm.apiUrl = 'https://coursegetter.herokuapp.com/';
+    }
 
     vm.saveCredentials = () => {
       $scope.invalidCredentials = false;
@@ -124,8 +128,6 @@
 
       // Get HTML Data from textarea
       const htmlData = JSON.stringify(vm.courseHtml);
-
-      vm.submitted = true;
 
       // Create H2 elements for sub headers
       var h2Req = document.createElement('h2');
@@ -286,13 +288,32 @@
           element.classList = 'title is-3';
         }
       }); 
-      descDiv.appendChild(descriptionInApp);
+      
+      vm.verifyDuplicatedPost(vm.data).then(({ data }) => {
+        if (data.message !== 'Duplicated post') {
+          vm.submitted = true;
+          descDiv.appendChild(descriptionInApp);
+        } else {
+          vm.reset();
+          bulmaToast.toast({
+            message: 'Post already exists!',
+            duration: 2000,
+            type: 'is-danger',
+            position: 'bottom-right',
+            animate: { in: 'fadeIn', out: 'fadeOut' }
+          });
+        }
+      })
     };
 
     vm.reset = () => {
       vm.courseHtml = '';
       vm.submitted = false;
       vm.tagString = '';
+      if (vm.bcalendar && vm.bcalendar[0]) {
+        vm.bcalendar[0].clear();
+      }
+      document.getElementById('calendar').style.display = 'none';
       vm.courseCoupon = '';
       vm.data = {
         status: 'publish',
@@ -317,14 +338,6 @@
             position: 'bottom-right',
             animate: { in: 'fadeIn', out: 'fadeOut' }
           });
-        } else if (data.message === 'Duplicated post') {
-          bulmaToast.toast({
-            message: 'Post already exists!',
-            duration: 2000,
-            type: 'is-danger',
-            position: 'bottom-right',
-            animate: { in: 'fadeIn', out: 'fadeOut' }
-          });
         }
       });
     };
@@ -333,9 +346,7 @@
       const dto = {
         basic: authenticateUser(username, password)
       };
-      const apiUrl = 'https://coursegetter.herokuapp.com/auth';
-      const isLocalhost = location.hostname === 'localhost';
-      return $http.post(isLocalhost ? apiUrl : '/auth', dto);
+      return $http.post(`${vm.apiUrl}/auth`, dto);
     }
 
     vm.httpSendPost = data => {
@@ -345,9 +356,17 @@
         image: vm.image,
         basic: authenticateUser(username, password)
       }
-      const apiUrl = 'https://coursegetter.herokuapp.com/post';
-      const isLocalhost = location.hostname === 'localhost';
-      return $http.post(isLocalhost ? apiUrl : '/post', DTO);
+      return $http.post(`${vm.apiUrl}/post`, DTO);
+    };
+
+    vm.verifyDuplicatedPost = data => {
+      const { username, password } = JSON.parse(localStorage.getItem('credentials'));
+      const DTO = {
+        data,
+        image: vm.image,
+        basic: authenticateUser(username, password)
+      }
+      return $http.post(`${vm.apiUrl}/verifypost`, DTO);
     };
 
     function authenticateUser(username, password) {
@@ -364,7 +383,7 @@
       vm.data.status = opt;
       if (opt === 'future') {
         // Initialize all input of date type.
-        bulmaCalendar.attach('[type="date"]', {
+        vm.bcalendar = bulmaCalendar.attach('[type="date"]', {
           type: 'datetime',
           color: 'info',
           validateLabel: 'OK',
