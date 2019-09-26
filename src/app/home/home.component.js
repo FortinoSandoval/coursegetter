@@ -204,7 +204,9 @@
         vm.data.tags.push(`udemy discount`);
       }
 
-      console.log(vm.data.tags);
+      $scope.selectedListText.forEach(el => {
+        vm.data.tags.push(el);
+      });
 
       /** Extract get */
       const subHeadLine = htmlData.substring(htmlData.indexOf('clp-lead__headline'));
