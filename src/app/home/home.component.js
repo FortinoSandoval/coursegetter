@@ -108,7 +108,6 @@
       if (vm.data.discount === 100) {
         vm.data.categories.push(50);
       }
-      console.log(vm.data.categories);
 
       vm.data.tags = vm.tagString.split(',').map(str => str.trim())
 
