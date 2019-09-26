@@ -169,8 +169,12 @@
         }
       });
 
-      if (vm.courseLink.indexOf('source:') > 0) {
-        vm.courseLink = vm.courseLink.substring(vm.courseLink.indexOf('source:') + 7)
+      // Enrolled users get
+      const subUrl = htmlData.substring(htmlData.indexOf('og:url') + 19)
+      let finalUrl = subUrl.substring(0, subUrl.indexOf('>') - 2);
+      
+      if (vm.courseCoupon) {
+        finalUrl += `?couponCode=${vm.courseCoupon}`
       }
       
       /** Go to course link */
@@ -179,7 +183,7 @@
       const courseLink = document.createElement('a');
       courseLink.target = '_blank';
       courseLink.rel = 'noreferrer noopener';
-      courseLink.href = vm.courseLink;
+      courseLink.href = finalUrl;
       const linkImg = document.createElement('img');
       linkImg.src = 'https://techcoursesite.com/wp-content/uploads/2019/09/course-link.png';
 
@@ -240,7 +244,7 @@
       const subLang = htmlData.substring(htmlData.indexOf('clp-lead__locale'));
       const subLang2 = subLang.substring(subLang.indexOf('</span>') + 9);
       const lang = subLang2.substring(0, subLang2.indexOf('</d') - 2);
-      
+
       // hours
       const subHours = htmlData.substring(htmlData.indexOf('video-content-length') + 25);
       const hours = subHours.substring(0, subHours.indexOf(' hours'));
@@ -286,7 +290,7 @@
       vm.courseHtml = '';
       vm.submitted = false;
       vm.tagString = '';
-      vm.courseLink = '';
+      vm.courseCoupon = '';
       vm.data = {
         status: 'draft',
         discount: $scope.selectOpts[0],
@@ -298,8 +302,10 @@
     };
 
     vm.send = () => {
+      $scope.loading = true;
       vm.httpSendPost(vm.data).then(({ data }) => {
         if (data.statusCode === 201) {
+          $scope.loading = false;
           vm.reset();
           bulmaToast.toast({
             message: 'Information sent!',
