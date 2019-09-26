@@ -296,7 +296,7 @@
       vm.tagString = '';
       vm.courseCoupon = '';
       vm.data = {
-        status: 'draft',
+        status: 'publish',
         discount: $scope.selectOpts[0],
         tags: []
       };

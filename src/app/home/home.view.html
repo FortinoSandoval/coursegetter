@@ -94,7 +94,7 @@
           <label class="label">Tipo de publicación</label>
           <div class="tabs is-toggle">
             <ul>
-              <li ng-init="vm.data.status = 'draft'" ng-class="{'is-active': vm.data.status === opt.val}"
+              <li ng-init="vm.data.status = 'publish'" ng-class="{'is-active': vm.data.status === opt.val}"
                 ng-repeat="opt in selectPublishOpts" ng-click="publishSelect(opt.val)">
                 <a>
                   <span class="icon is-small"><i class="fas"
