@@ -69,10 +69,8 @@ app.post('/post', (req, resp, next) => {
     const alreadyExist = body.find(x => x.title.rendered === finalTitle)
     if (alreadyExist) {
       const res = {
-        data: {
-          statusCode: 400,
-          message: 'Duplicated post'
-        }
+        statusCode: 400,
+        message: 'Duplicated post'
       };
       resp.send(res);
       return;

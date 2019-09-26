@@ -17,7 +17,6 @@
       tags: []
     };
     $scope.categories = [
-      { id: 50, text: '100% OFF' },
       { id: 21, text: 'Databases' },
       { id: 9, text: 'Design' },
       { id: 24, text: 'Development Tools' },
@@ -105,6 +104,11 @@
           $scope.selectedListText.push($scope.categories.find(x => x.id === index).text);
         }
       });
+
+      if (vm.data.discount === 100) {
+        vm.data.categories.push(50);
+      }
+      console.log(vm.data.categories);
 
       vm.data.tags = vm.tagString.split(',').map(str => str.trim())
 
