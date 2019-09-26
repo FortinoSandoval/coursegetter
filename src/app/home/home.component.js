@@ -70,7 +70,9 @@
         username: vm.username,
         password: vm.password
       };
+      document.querySelector('body').classList.add('request');
       $scope.auth(credentials).then(({data}) => {
+        document.querySelector('body').classList.remove('request');
         $scope.loading = false;
         if (data.statusCode === 401) $scope.invalidCredentials = true;
         else if (data.statusCode === 200) {
@@ -298,8 +300,10 @@
           element.classList = 'title is-3';
         }
       }); 
-      
+      document.querySelector('body').classList.add('request');
+
       vm.verifyDuplicatedPost(vm.data).then(({ data }) => {
+        document.querySelector('body').classList.remove('request');
         if (data.message !== 'Duplicated post') {
           vm.submitted = true;
           descDiv.appendChild(descriptionInApp);
@@ -339,7 +343,9 @@
 
     vm.send = () => {
       $scope.loading = true;
+      document.querySelector('body').classList.add('request');
       vm.httpSendPost(vm.data).then(({ data }) => {
+        document.querySelector('body').classList.remove('request');
         $scope.loading = false;
         if (data.statusCode === 201) {
           vm.reset();

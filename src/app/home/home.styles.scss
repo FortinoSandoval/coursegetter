@@ -25,6 +25,10 @@
   margin-bottom: 1em;
 }
 
+.request {
+  cursor: wait;
+}
+
 // mobile phone
 @media only screen and (max-width: 991px) {
 	.categories-selection .checkbox {
