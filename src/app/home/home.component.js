@@ -304,13 +304,21 @@
     vm.send = () => {
       $scope.loading = true;
       vm.httpSendPost(vm.data).then(({ data }) => {
+        $scope.loading = false;
         if (data.statusCode === 201) {
-          $scope.loading = false;
           vm.reset();
           bulmaToast.toast({
             message: 'Information sent!',
             duration: 2000,
             type: 'is-info',
+            position: 'bottom-right',
+            animate: { in: 'fadeIn', out: 'fadeOut' }
+          });
+        } else if (data.message === 'Duplicated post') {
+          bulmaToast.toast({
+            message: 'Post already exists!',
+            duration: 2000,
+            type: 'is-danger',
             position: 'bottom-right',
             animate: { in: 'fadeIn', out: 'fadeOut' }
           });
